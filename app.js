@@ -1,28 +1,68 @@
-fetch("https://digitalgojp.sharepoint.com/sites/NTA_IBHub12/_api/web/lists(guid'd810a0c4-002d-4702-84dc-96366a6480e5')/items", {
-  credentials: 'include',
-  headers: {
-    'Accept': 'application/json;odata=nometadata'
+const app = document.getElementById('tiles');
+
+(window.imageTilesData || []).forEach((item, index) => {
+
+  const image = item.Image || '';
+  const hoverImage = item.HoverImage || '';
+  const link = item.Link || '#';
+
+  const el = document.createElement('a');
+
+  el.className = 'tile hoverEnabled hover_zoom animInit anim_slide';
+
+  el.href = link;
+  el.target = '_blank';
+
+  el.style.setProperty('--i', index);
+
+  el.innerHTML = `
+    <div class="imageWrapper">
+
+      <img
+        class="image imageNormal contain"
+        src="${image}"
+      >
+
+      ${
+        hoverImage
+          ? `
+          <img
+            class="image imageHover contain"
+            src="${hoverImage}"
+          >
+        `
+          : ''
+      }
+
+    </div>
+  `;
+
+  app.appendChild(el);
+
+});
+
+/* ===== スクロールアニメーション ===== */
+
+const observer = new IntersectionObserver(
+  (entries) => {
+
+    entries.forEach((entry) => {
+
+      if (entry.isIntersecting) {
+        entry.target.classList.add('inView');
+      } else {
+        entry.target.classList.remove('inView');
+      }
+
+    });
+
+  },
+  {
+    threshold: 0.15,
+    rootMargin: '0px 0px -10% 0px'
   }
-})
-.then(async response => {
+);
 
-  const text = await response.text();
-
-  console.log(text);
-
-  document.body.innerHTML =
-    '<pre>' +
-    text
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;') +
-    '</pre>';
-
-})
-.catch(error => {
-
-  console.error(error);
-
-  document.body.innerHTML =
-    '<pre>' + error + '</pre>';
-
+document.querySelectorAll('.tile').forEach((el) => {
+  observer.observe(el);
 });
