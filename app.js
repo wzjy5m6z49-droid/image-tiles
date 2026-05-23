@@ -1,68 +1,61 @@
-const app = document.getElementById('tiles');
+function renderTiles(items) {
+  const app = document.getElementById('tiles');
+  app.innerHTML = '';
 
-(window.imageTilesData || []).forEach((item, index) => {
+  items.forEach((item, index) => {
+    const image = item.Image || '';
+    const hoverImage = item.HoverImage || '';
+    const link = item.Link || '#';
 
-  const image = item.Image || '';
-  const hoverImage = item.HoverImage || '';
-  const link = item.Link || '#';
+    const el = document.createElement('a');
+    el.className = 'tile hoverEnabled hover_zoom animInit anim_slide';
+    el.href = link;
+    el.target = '_blank';
+    el.style.setProperty('--i', index);
 
-  const el = document.createElement('a');
+    el.innerHTML = `
+      <div class="imageWrapper">
+        <img class="image imageNormal contain" src="${image}">
+        ${
+          hoverImage
+            ? `<img class="image imageHover contain" src="${hoverImage}">`
+            : ''
+        }
+      </div>
+    `;
 
-  el.className = 'tile hoverEnabled hover_zoom animInit anim_slide';
+    app.appendChild(el);
+  });
 
-  el.href = link;
-  el.target = '_blank';
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('inView');
+        } else {
+          entry.target.classList.remove('inView');
+        }
+      });
+    },
+    {
+      threshold: 0.15,
+      rootMargin: '0px 0px -10% 0px'
+    }
+  );
 
-  el.style.setProperty('--i', index);
+  document.querySelectorAll('.tile').forEach((el) => {
+    observer.observe(el);
+  });
+}
 
-  el.innerHTML = `
-    <div class="imageWrapper">
+const script = document.createElement('script');
 
-      <img
-        class="image imageNormal contain"
-        src="${image}"
-      >
+script.src =
+  'https://digitalgojp.sharepoint.com/sites/NTA_IBHub12/SiteAssets/image-tiles/image-tiles-data.js?v=' +
+  new Date().getTime();
 
-      ${
-        hoverImage
-          ? `
-          <img
-            class="image imageHover contain"
-            src="${hoverImage}"
-          >
-        `
-          : ''
-      }
+script.onload = () => {
+  renderTiles(window.imageTilesData || []);
+};
 
-    </div>
-  `;
-
-  app.appendChild(el);
-
-});
-
-/* ===== スクロールアニメーション ===== */
-
-const observer = new IntersectionObserver(
-  (entries) => {
-
-    entries.forEach((entry) => {
-
-      if (entry.isIntersecting) {
-        entry.target.classList.add('inView');
-      } else {
-        entry.target.classList.remove('inView');
-      }
-
-    });
-
-  },
-  {
-    threshold: 0.15,
-    rootMargin: '0px 0px -10% 0px'
-  }
-);
-
-document.querySelectorAll('.tile').forEach((el) => {
-  observer.observe(el);
-});
+document.head.appendChild(script);
