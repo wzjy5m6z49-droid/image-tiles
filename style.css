@@ -13,6 +13,23 @@ body{
 .tiles{
   display:flex;
   gap:20px;
+
+  opacity:0;
+  transform:translateY(30px);
+
+  animation:fadeUp .9s ease forwards;
+}
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(30px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
 }
 
 .tile{
