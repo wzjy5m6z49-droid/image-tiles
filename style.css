@@ -24,20 +24,26 @@ body{
 }
 
 .tile:hover{
-  transform:translateY(-6px) scale(1.03);
+  transform:translateY(-6px);
 }
 
 .image{
   display:block;
   width:500px;
   height:auto;
-  transition:.3s;
+  transition:.4s ease;
+}
+
+/* ホバー時に画像ズーム */
+.tile:hover .image{
+  transform:scale(1.08);
 }
 
 .imageHover{
   position:absolute;
   inset:0;
   opacity:0;
+  transition:.4s ease;
 }
 
 .tile:hover .imageHover{
