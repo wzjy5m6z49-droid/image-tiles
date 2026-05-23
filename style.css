@@ -1,0 +1,53 @@
+body{
+  margin:0;
+  padding:20px;
+  background:#111;
+}
+
+.tiles{
+  display:flex;
+  gap:20px;
+}
+
+.tile{
+  position:relative;
+  overflow:hidden;
+  border-radius:16px;
+  display:inline-block;
+  transition:.3s;
+}
+
+.tile:hover{
+  transform:translateY(-6px) scale(1.03);
+}
+
+.image{
+  display:block;
+  width:500px;
+  height:auto;
+  transition:.3s;
+}
+
+.imageHover{
+  position:absolute;
+  inset:0;
+  opacity:0;
+}
+
+.tile:hover .imageHover{
+  opacity:1;
+}
+
+.tile:hover .imageNormal{
+  opacity:0;
+}
+
+.title{
+  position:absolute;
+  left:14px;
+  bottom:14px;
+  color:#fff;
+  font-weight:bold;
+  font-size:18px;
+  text-shadow:0 2px 8px rgba(0,0,0,.8);
+}
