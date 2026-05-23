@@ -1,22 +1,28 @@
-fetch("https://digitalgojp.sharepoint.com/sites/NTA_IBHub12/_api/web/lists(guid'd810a0c4-002d-4702-84dc-96366a6480e5')/items")
-  .then(response => response.json())
-  .then(data => {
+fetch("https://digitalgojp.sharepoint.com/sites/NTA_IBHub12/_api/web/lists(guid'd810a0c4-002d-4702-84dc-96366a6480e5')/items", {
+  credentials: 'include',
+  headers: {
+    'Accept': 'application/json;odata=nometadata'
+  }
+})
+.then(async response => {
 
-    console.log(data);
+  const text = await response.text();
 
-    document.body.innerHTML =
-      '<pre>' +
-      JSON.stringify(data, null, 2) +
-      '</pre>';
+  console.log(text);
 
-  })
-  .catch(error => {
+  document.body.innerHTML =
+    '<pre>' +
+    text
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;') +
+    '</pre>';
 
-    console.error(error);
+})
+.catch(error => {
 
-    document.body.innerHTML =
-      '<pre>' +
-      error +
-      '</pre>';
+  console.error(error);
 
-  });
+  document.body.innerHTML =
+    '<pre>' + error + '</pre>';
+
+});
