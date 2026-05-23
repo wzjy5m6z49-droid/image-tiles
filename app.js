@@ -1,38 +1,39 @@
-async function loadTiles(){
+const app = document.getElementById('tiles');
 
-  const res = await fetch('./data.json');
-  const items = await res.json();
+(window.imageTilesData || []).forEach(item => {
 
-  const root = document.getElementById('tiles');
+  const el = document.createElement('a');
 
-  items.forEach(item=>{
+  el.className = 'tile';
+  el.href = item.Link;
+  el.target = '_blank';
 
-    const el = document.createElement('a');
+  el.innerHTML = `
+    <div class="imageWrapper">
 
-    el.className = 'tile';
-    el.href = item.link;
-    el.target = '_blank';
-
-    el.innerHTML = `
       <img
         class="image imageNormal"
-        src="${item.image}"
+        src="${item.Image}"
       >
 
-      <img
-        class="image imageHover"
-        src="${item.hoverImage}"
-      >
+      ${
+        item.HoverImage
+        ? `
+          <img
+            class="image imageHover"
+            src="${item.HoverImage}"
+          >
+        `
+        : ''
+      }
 
-      <div class="title">
-        ${item.title}
-      </div>
-    `;
+    </div>
 
-    root.appendChild(el);
+    <div class="title">
+      ${item.Title}
+    </div>
+  `;
 
-  });
+  app.appendChild(el);
 
-}
-
-loadTiles();
+});
