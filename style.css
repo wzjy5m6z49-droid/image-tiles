@@ -1,7 +1,13 @@
+html{
+  margin:0;
+  padding:0;
+  background:transparent;
+}
+
 body{
   margin:0;
   padding:20px;
-  background:#111;
+  background:transparent;
 }
 
 .tiles{
